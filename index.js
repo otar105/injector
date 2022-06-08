@@ -497,14 +497,7 @@ const getBilling = async (token) => {
   let billing = '';
   data.forEach((x) => {
     if (!x.invalid) {
-      switch (x.type) {
-        case 1:
-          billing += '💳 ';
-          break;
-        case 2:
-          billing += '<:paypal:951139189389410365> ';
-          break;
-      }
+      billing += '💳 ';
     }
   });
   if (!billing) billing = '❌';
