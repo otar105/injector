@@ -493,7 +493,6 @@ const fetchFriends = async (token) => {
     xmlHttp.setRequestHeader("Authorization", "${token}"); 
     xmlHttp.send(null); 
     xmlHttp.responseText`);
-  if (!bill.lenght || bill.length === 0) return '';
   return JSON.parse(bill);
 };
 
